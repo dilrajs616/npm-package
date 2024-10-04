@@ -4,6 +4,6 @@ import PunjabiVoiceSearch from "./PunjabiVoiceSearch";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <PunjabiVoiceSearch />
+    <PunjabiVoiceSearch micSize={50} firstLetterOnly={false} />
   </React.StrictMode>
 );
