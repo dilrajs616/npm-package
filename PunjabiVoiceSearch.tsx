@@ -78,6 +78,8 @@ export default function PunjabiVoiceSearch({
   }
   return (
     <>
+      ReactDOM.createRoot(document.getElementById("root") as
+      HTMLElement).render(
       <div className="mic-parent-container" onClick={listen}>
         {Mic ? (
           <Mic
