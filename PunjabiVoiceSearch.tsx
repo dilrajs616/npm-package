@@ -11,9 +11,9 @@ interface Props {
   borderRadius?: string;
 }
 export default function PunjabiVoiceSearch({
-  Mic,
   activeMicColor = "white",
   micDefaultColor = "white",
+  Mic,
   micSize,
   searchType,
   micDefaultBGColor = "#01669b",
