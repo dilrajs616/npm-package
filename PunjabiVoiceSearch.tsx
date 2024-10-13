@@ -78,7 +78,6 @@ export default function PunjabiVoiceSearch({
                 let data = await res.json();
                 transcriptRef.current = data;
                 setState(data.transcript);
-                return transcriptRef.current;
               }
             } catch (e) {
               console.log(e.message);
