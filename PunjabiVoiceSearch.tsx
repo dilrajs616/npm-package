@@ -9,6 +9,8 @@ interface Props {
   micDefaultBGColor?: string;
   micSize?: number;
   borderRadius?: string;
+  state: any;
+  setState: any;
 }
 export default function PunjabiVoiceSearch({
   activeMicColor = "white",
@@ -19,6 +21,8 @@ export default function PunjabiVoiceSearch({
   micDefaultBGColor = "#01669b",
   micActiveBGColor = "#f39c1d",
   borderRadius,
+  state,
+  setState,
 }: Props) {
   const [recording, setRecording] = useState<boolean>(false);
   const streamRef = useRef<any>(null);
@@ -45,6 +49,8 @@ export default function PunjabiVoiceSearch({
         let audioBlob = new Blob(chunks, { type: "audio/wav" });
         if (audioBlob) {
           let reader = new FileReader();
+          chunks = [];
+
           reader.readAsDataURL(audioBlob);
           reader.onload = async () => {
             resultRef.current = reader.result?.toString().split(",")[1];
@@ -71,7 +77,7 @@ export default function PunjabiVoiceSearch({
               } else {
                 let data = await res.json();
                 transcriptRef.current = data;
-
+                setState(data.transcript);
                 return transcriptRef.current;
               }
             } catch (e) {
