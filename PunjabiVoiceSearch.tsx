@@ -2,22 +2,22 @@ import React, { useEffect, useRef, useState } from "react";
 import { CiMicrophoneOn } from "react-icons/ci";
 interface Props {
   Mic?: React.ElementType;
+  searchType: string;
+  micActiveBGColor?: string;
   activeMicColor?: string;
   micDefaultColor?: string;
   micDefaultBGColor?: string;
-  micActiveBGColor?: string;
   micSize?: number;
   borderRadius?: string;
-  searchType: string;
 }
 export default function PunjabiVoiceSearch({
+  activeMicColor = "white",
+  micDefaultColor = "white",
   Mic,
-  activeMicColor,
-  micDefaultColor,
   micSize,
   searchType,
-  micDefaultBGColor,
-  micActiveBGColor,
+  micDefaultBGColor = "#01669b",
+  micActiveBGColor = "#f39c1d",
   borderRadius,
 }: Props) {
   const [recording, setRecording] = useState<boolean>(false);
@@ -30,8 +30,8 @@ export default function PunjabiVoiceSearch({
   async function listen(e: any) {
     if (recording) {
       recorderRef.current.stop();
+      streamRef.current.getTracks().forEach((track: any) => track.stop());
       setRecording(false);
-      streamRef;
     } else {
       e.preventDefault();
       streamRef.current = await navigator.mediaDevices.getUserMedia({
@@ -48,7 +48,8 @@ export default function PunjabiVoiceSearch({
           reader.readAsDataURL(audioBlob);
           reader.onload = async () => {
             resultRef.current = reader.result?.toString().split(",")[1];
-            let url = "http://localhost:3000/transcript";
+            let url =
+              "https://punjabi-transcript-82115345315.asia-southeast2.run.app/transcript";
             try {
               let res = await fetch(url, {
                 method: "POST",
@@ -57,7 +58,12 @@ export default function PunjabiVoiceSearch({
                 },
                 body: JSON.stringify({
                   audioData: resultRef.current,
-                  initials: searchType === "gurbani" ? true : false,
+                  initials:
+                    searchType === "gurbani"
+                      ? true
+                      : searchType === "transcript"
+                      ? false
+                      : undefined,
                 }),
               });
               if (!res.ok) {
@@ -65,6 +71,8 @@ export default function PunjabiVoiceSearch({
               } else {
                 let data = await res.json();
                 transcriptRef.current = data;
+
+                return transcriptRef.current;
               }
             } catch (e) {
               console.log(e.message);
@@ -78,28 +86,22 @@ export default function PunjabiVoiceSearch({
   }
   return (
     <>
-      ReactDOM.createRoot(document.getElementById("root") as
-      HTMLElement).render(
       <div className="mic-parent-container" onClick={listen}>
         {Mic ? (
           <Mic
             size={micSize}
-            color={recording ? activeMicColor : micDefaultColor || "#01669b"}
+            color={recording ? activeMicColor : micDefaultColor}
             style={{
-              background: recording
-                ? micActiveBGColor
-                : micDefaultBGColor || "#f39c1d",
+              background: recording ? micActiveBGColor : micDefaultBGColor,
               borderRadius: `${borderRadius ? borderRadius : 0}`,
             }}
           />
         ) : (
           <CiMicrophoneOn
             size={micSize}
-            color={recording ? activeMicColor : micDefaultColor || "#01669b"}
+            color={recording ? activeMicColor : micDefaultColor}
             style={{
-              background: recording
-                ? micActiveBGColor
-                : micDefaultBGColor || "#f39c1d",
+              background: recording ? micActiveBGColor : micDefaultBGColor,
               borderRadius: `${borderRadius ? borderRadius : 0}`,
             }}
           />
