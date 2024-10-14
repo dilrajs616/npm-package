@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { CiMicrophoneOn } from "react-icons/ci";
+
 interface Props {
   Mic?: React.ElementType;
   searchType: string;
+  onTranscript?: (transcript: string) => void; // Callback for sending transcript
   micActiveBGColor?: string;
   activeMicColor?: string;
   micDefaultColor?: string;
@@ -10,6 +12,7 @@ interface Props {
   micSize?: number;
   borderRadius?: string;
 }
+
 export default function PunjabiVoiceSearch({
   activeMicColor = "white",
   micDefaultColor = "white",
@@ -19,6 +22,7 @@ export default function PunjabiVoiceSearch({
   micDefaultBGColor = "#01669b",
   micActiveBGColor = "#f39c1d",
   borderRadius,
+  onTranscript, // Add the callback for transcript
 }: Props) {
   const [recording, setRecording] = useState<boolean>(false);
   const streamRef = useRef<any>(null);
@@ -34,22 +38,30 @@ export default function PunjabiVoiceSearch({
       setRecording(false);
     } else {
       e.preventDefault();
+      chunks = []; // Reset chunks array for new recording
       streamRef.current = await navigator.mediaDevices.getUserMedia({
         audio: true,
       });
       recorderRef.current = new MediaRecorder(streamRef.current);
+
       recorderRef.current.ondataavailable = (e: BlobEvent) => {
         chunks.push(e.data);
       };
+
       recorderRef.current.onstop = async () => {
         let audioBlob = new Blob(chunks, { type: "audio/wav" });
+        chunks = []; // Clear chunks after processing
+
         if (audioBlob) {
           let reader = new FileReader();
           reader.readAsDataURL(audioBlob);
+
           reader.onload = async () => {
             resultRef.current = reader.result?.toString().split(",")[1];
+
             let url =
               "https://punjabi-transcript-82115345315.asia-southeast2.run.app/transcript";
+
             try {
               let res = await fetch(url, {
                 method: "POST",
@@ -66,24 +78,34 @@ export default function PunjabiVoiceSearch({
                       : undefined,
                 }),
               });
-              if (!res.ok) {
-                console.log(res.status);
-              } else {
-                let data = await res.json();
-                transcriptRef.current = data;
 
-                return transcriptRef.current;
+              if (!res.ok) {
+                console.log("Error:", res.status);
+              } else {
+                try {
+                  let data = await res.json();
+                  transcriptRef.current = data.transcript; // Assuming API returns 'transcript'
+
+                  // Call the onTranscript callback if provided
+                  if (onTranscript && transcriptRef.current) {
+                    onTranscript(transcriptRef.current);
+                  }
+                } catch (err) {
+                  console.error("Error parsing response:", err);
+                }
               }
             } catch (e) {
-              console.log(e.message);
+              console.log("Error in fetching:", e.message);
             }
           };
         }
       };
+
       recorderRef.current.start();
       setRecording(true);
     }
   }
+
   return (
     <>
       <div className="mic-parent-container" onClick={listen}>
