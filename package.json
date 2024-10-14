@@ -1,6 +1,6 @@
 {
   "name": "punjabi-voice-search",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Returns punjabi language transcript using google speech-to-text api.",
   "main": "index.js",
   "scripts": {
