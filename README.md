@@ -52,16 +52,16 @@ interface Props {
 }
 ```
 
-### Input Parameters
+## Input Parameters
 
 | Variable Name | Value                                     |
 |---------------|-------------------------------------------|
 | audioData     | `string:` Audio Data in base64 format      |
 | initials      | `boolean:` true or false                  |
 
-### Return Value Based On searchType
+## Return Value Based On "initials"
 
-| searchType | Return Value                                                                 |
+| initials | Return Value                                                                 |
 |------------|------------------------------------------------------------------------------|
 | true       | `transcript(string)` First letter of each word in a variable called "transcript" |
 | false      | `transcript(string)` Proper transcript in a variable called "transcript"     |
