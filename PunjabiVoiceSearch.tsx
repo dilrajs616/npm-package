@@ -3,7 +3,7 @@ import { CiMicrophoneOn } from "react-icons/ci";
 
 interface Props {
   Mic?: React.ElementType;
-  searchType: string;
+  initials: boolean; 
   onTranscript?: (transcript: string) => void; // Callback for sending transcript
   micActiveBGColor?: string;
   activeMicColor?: string;
@@ -18,7 +18,7 @@ export default function PunjabiVoiceSearch({
   micDefaultColor = "white",
   Mic,
   micSize,
-  searchType,
+  initials, // Changed from searchType and now expects a boolean
   micDefaultBGColor = "#01669b",
   micActiveBGColor = "#f39c1d",
   borderRadius,
@@ -80,12 +80,7 @@ export default function PunjabiVoiceSearch({
                 },
                 body: JSON.stringify({
                   audioData: resultRef.current,
-                  initials:
-                    searchType === "gurbani"
-                      ? true
-                      : searchType === "transcript"
-                      ? false
-                      : undefined,
+                  initials, // Send the boolean directly
                 }),
               });
 
