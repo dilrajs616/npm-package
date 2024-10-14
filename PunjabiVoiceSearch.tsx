@@ -11,6 +11,8 @@ interface Props {
   micDefaultBGColor?: string;
   micSize?: number;
   borderRadius?: string;
+  state: any;
+  setState: any;
 }
 
 export default function PunjabiVoiceSearch({
@@ -54,6 +56,8 @@ export default function PunjabiVoiceSearch({
 
         if (audioBlob) {
           let reader = new FileReader();
+          chunks = [];
+
           reader.readAsDataURL(audioBlob);
 
           reader.onload = async () => {
