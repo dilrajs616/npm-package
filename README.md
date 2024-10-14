@@ -1,8 +1,5 @@
 <div class="container my-5">
-  <details>
-    <summary class="bg-white text-black p-3 rounded">
-      <h5 class="mb-0">Customization Of Component</h5>
-    </summary>
+    <h5 class="mb-0">Customization Of Component</h5>
     <div class="card mt-3">
       <div class="card-body">
         <pre class="bg-light p-3 rounded">
@@ -16,13 +13,36 @@ interface Props {
     micSize?: number;
     borderRadius?: string;
     searchType: string;
-}
-</code>
+}</code>
         </pre>
-      </div>
+        </div>
     </div>
-  </details>
 </div>
+
+<h5 class="my-1">Input Parameters</h5>
+<div class="table-responsive" id="table">
+  <table class="table table-bordered table-striped table-hover">
+    <thead class="table-primary">
+      <tr>
+        <th>Variable Name</th>
+        <th>Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>audioData</td>
+        <td><pre><code>string:</code></pre>Audio Data in base64 format</td>
+      </tr>
+      <tr>
+        <td>searchType</td>
+        <td><pre><code>string:</code></pre></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+If the "initials" value is false, then the backend will return the normal transcript as it is. But if the value of "initials" is true, then the backend will return a string that contains the first letter of each word, separated with spaces.
+
 
 <p class="lead my-4">
   Just like our Demo Project, this project is first sending the audio data to the <a href="week4.html#demo-project">express backend.</a> 

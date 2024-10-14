@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { CiMicrophoneOn } from "react-icons/ci";
 
 interface Props {
@@ -11,8 +11,6 @@ interface Props {
   micDefaultBGColor?: string;
   micSize?: number;
   borderRadius?: string;
-  state: any;
-  setState: any;
 }
 
 export default function PunjabiVoiceSearch({
@@ -35,15 +33,23 @@ export default function PunjabiVoiceSearch({
 
   async function listen(e: any) {
     if (recording) {
-      recorderRef.current.stop();
-      streamRef.current.getTracks().forEach((track: any) => track.stop());
+      recorderRef.current.stop(); // Stop recording first
+      // Stop the microphone stream after recording is stopped
+      recorderRef.current.onstop = () => {
+        streamRef.current.getTracks().forEach((track: any) => track.stop());
+      };
       setRecording(false);
     } else {
       e.preventDefault();
       chunks = []; // Reset chunks array for new recording
-      streamRef.current = await navigator.mediaDevices.getUserMedia({
-        audio: true,
-      });
+      try {
+        streamRef.current = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
+      } catch (error) {
+        console.error("Error accessing microphone:", error);
+        return;
+      }
       recorderRef.current = new MediaRecorder(streamRef.current);
 
       recorderRef.current.ondataavailable = (e: BlobEvent) => {
