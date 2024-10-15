@@ -78,7 +78,7 @@ export default function PunjabiVoiceSearch({
                 transcriptRef.current = data;
                 setState(data.transcript);
               }
-            } catch (e) {
+            } catch (e: any) {
               console.log(e.message);
             }
           };
