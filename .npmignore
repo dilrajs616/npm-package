@@ -4,3 +4,4 @@ tsconfig.node.json
 index.html
 index.ts
 PunjabiVoiceSearch.tsx
+PunjabiVoiceSearch.js
