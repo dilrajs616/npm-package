@@ -1,7 +1,7 @@
 {
   "name": "punjabi-voice-search",
   "version": "2.0.0",
-  "description": "This package will provide a microphone component that developer can simply import and use in their react apps. This component will return punjabi language transcript in two ways. Either full trancription or first letter of every word only.",
+  "description": "Returns punjabi language transcript using google speech-to-text api.",
   "main": "dist/punjabi-voice-search.cjs.js",
   "module": "dist/punjabi-voice-search.es.js",
   "browser": "dist/punjabi-voice-search.umd.js",
