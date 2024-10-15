@@ -1,28 +1,28 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { CiMicrophoneOn } from "react-icons/ci";
-
 interface Props {
   Mic?: React.ElementType;
-  initials: boolean; 
-  onTranscript?: (transcript: string) => void; // Callback for sending transcript
+  initials: boolean;
   micActiveBGColor?: string;
   activeMicColor?: string;
   micDefaultColor?: string;
   micDefaultBGColor?: string;
   micSize?: number;
   borderRadius?: string;
+  state: any;
+  setState: any;
 }
-
 export default function PunjabiVoiceSearch({
   activeMicColor = "white",
   micDefaultColor = "white",
   Mic,
   micSize,
-  initials, // Changed from searchType and now expects a boolean
+  initials,
   micDefaultBGColor = "#01669b",
   micActiveBGColor = "#f39c1d",
   borderRadius,
-  onTranscript, // Add the callback for transcript
+  state,
+  setState,
 }: Props) {
   const [recording, setRecording] = useState<boolean>(false);
   const streamRef = useRef<any>(null);
@@ -33,45 +33,29 @@ export default function PunjabiVoiceSearch({
 
   async function listen(e: any) {
     if (recording) {
-      recorderRef.current.stop(); // Stop recording first
-      // Stop the microphone stream after recording is stopped
-      recorderRef.current.onstop = () => {
-        streamRef.current.getTracks().forEach((track: any) => track.stop());
-      };
+      recorderRef.current.stop();
+      streamRef.current.getTracks().forEach((track: any) => track.stop());
       setRecording(false);
     } else {
       e.preventDefault();
-      chunks = []; // Reset chunks array for new recording
-      try {
-        streamRef.current = await navigator.mediaDevices.getUserMedia({
-          audio: true,
-        });
-      } catch (error) {
-        console.error("Error accessing microphone:", error);
-        return;
-      }
+      streamRef.current = await navigator.mediaDevices.getUserMedia({
+        audio: true,
+      });
       recorderRef.current = new MediaRecorder(streamRef.current);
-
       recorderRef.current.ondataavailable = (e: BlobEvent) => {
         chunks.push(e.data);
       };
-
       recorderRef.current.onstop = async () => {
         let audioBlob = new Blob(chunks, { type: "audio/wav" });
-        chunks = []; // Clear chunks after processing
-
         if (audioBlob) {
           let reader = new FileReader();
           chunks = [];
 
           reader.readAsDataURL(audioBlob);
-
           reader.onload = async () => {
             resultRef.current = reader.result?.toString().split(",")[1];
-
             let url =
               "https://punjabi-transcript-82115345315.asia-southeast2.run.app/transcript";
-
             try {
               let res = await fetch(url, {
                 method: "POST",
@@ -80,37 +64,30 @@ export default function PunjabiVoiceSearch({
                 },
                 body: JSON.stringify({
                   audioData: resultRef.current,
-                  initials, // Send the boolean directly
+                  initials: initials
+                    ? true
+                    : initials === false
+                    ? false
+                    : undefined,
                 }),
               });
-
               if (!res.ok) {
-                console.log("Error:", res.status);
+                console.log(res.status);
               } else {
-                try {
-                  let data = await res.json();
-                  transcriptRef.current = data.transcript; // Assuming API returns 'transcript'
-
-                  // Call the onTranscript callback if provided
-                  if (onTranscript && transcriptRef.current) {
-                    onTranscript(transcriptRef.current);
-                  }
-                } catch (err) {
-                  console.error("Error parsing response:", err);
-                }
+                let data = await res.json();
+                transcriptRef.current = data;
+                setState(data.transcript);
               }
-            } catch (e) {
-              console.log("Error in fetching:", e.message);
+            } catch (e: any) {
+              console.log(e.message);
             }
           };
         }
       };
-
       recorderRef.current.start();
       setRecording(true);
     }
   }
-
   return (
     <>
       <div className="mic-parent-container" onClick={listen}>

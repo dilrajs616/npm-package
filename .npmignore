@@ -1,0 +1,7 @@
+node_modules
+.gitignore
+tsconfig.node.json
+index.html
+index.ts
+PunjabiVoiceSearch.tsx
+dist/PunjabiVoiceSearch.js

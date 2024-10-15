@@ -1,3 +1,5 @@
+# Punjabi Voice Search
+
 # punjabi-voice-search
 
 > Returns punjabi language transcript using google speech-to-text api.
@@ -54,17 +56,17 @@ interface Props {
 
 ## Input Parameters
 
-| Variable Name | Value                                     |
-|---------------|-------------------------------------------|
-| audioData     | `string:` Audio Data in base64 format      |
-| initials      | `boolean:` true or false                  |
+| Variable Name | Value                                 |
+| ------------- | ------------------------------------- |
+| audioData     | `string:` Audio Data in base64 format |
+| initials      | `boolean:` true or false              |
 
 ## Return Value Based On "initials"
 
-| initials | Return Value                                                                 |
-|------------|------------------------------------------------------------------------------|
-| true       | `transcript(string)` First letter of each word in a variable called "transcript" |
-| false      | `transcript(string)` Proper transcript in a variable called "transcript"     |
+| initials | Return Value                                                                     |
+| -------- | -------------------------------------------------------------------------------- |
+| true     | `transcript(string)` First letter of each word in a variable called "transcript" |
+| false    | `transcript(string)` Proper transcript in a variable called "transcript"         |
 
 ### Authors
 
