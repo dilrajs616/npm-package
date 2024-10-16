@@ -14,29 +14,48 @@ $ npm install punjabi-voice-search
 
 ## Usage
 
-Works with audioData in base64 string format.
-
 ```js
-import PunjabiVoiceSearch from 'punjabi-voice-search'; 
+import React, { useState } from 'react';
+import PunjabiVoiceSearch from 'punjabi-voice-search'; // Import from your package
 
-const [transcript, setTranscript] = useState<string | null>(null);
+const App: React.FC = () => {
+  const [transcript, setTranscript] = useState<string>(''); // For managing transcript state
 
-// Function to handle the transcript received from the API
-const handleTranscript = (transcript: string) => {
-  setTranscript(transcript);
-  console.log("Transcript received:", transcript);
+  return (
+    <div>
+      <h1>Punjabi Voice Search Example</h1>
+
+      {/* Using PunjabiVoiceSearch with initials as false */}
+      <h2>Transcript Mode</h2>
+      <PunjabiVoiceSearch
+        initials={false} // Transcript mode
+        micSize={40}
+        state={transcript} // Pass transcript state
+        setState={setTranscript} // Set transcript state
+      />
+
+      {/* Using PunjabiVoiceSearch with initials as true */}
+      <h2>Gurbani Mode</h2>
+      <PunjabiVoiceSearch
+        initials={true} // Gurbani search mode
+        micSize={40}
+        state={transcript} // Pass transcript state
+        setState={setTranscript} // Set transcript state
+      />
+
+      {/* Displaying the transcript */}
+      {transcript && (
+        <div>
+          <h3>Transcript Output:</h3>
+          <p>{transcript}</p>
+        </div>
+      )}
+    </div>
+  );
 };
 
-<PunjabiVoiceSearch
-  initials={false} // Set to false for transcript-only mode
-  onTranscript={handleTranscript} // Callback to get the transcript from API
-/>
+export default App;
 
-<PunjabiVoiceSearch
-  initials={true} // Set to true for Gurbani search mode
-  micSize={40} // Optional: Size of the microphone icon
-  onTranscript={handleTranscript} // Callback to get the transcript from API
-/>
 ```
 
 ## Customization Of Component
