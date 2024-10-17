@@ -30,7 +30,6 @@ export default function PunjabiVoiceSearch({
   const resultRef = useRef<any>(null);
   let chunks: any = [];
   const transcriptRef = useRef<any>(null);
-
   async function listen(e: any) {
     if (recording) {
       recorderRef.current.stop();
