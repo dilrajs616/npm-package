@@ -1,92 +1,94 @@
 # Punjabi Voice Search
 
-# punjabi-voice-search
+> Returns punjabi language transcript using google speech to text api.
 
-> Returns punjabi language transcript using google speech-to-text api.
+<a href="https://www.npmjs.com/package/punjabi-voice-search?activeTab=readme">
+<img alt="Static Badge" src="https://img.shields.io/badge/npm-Punjabivoice-search?style=flat-square&logoColor=%231e90ff&color=%231e90ff&link=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2Fpunjabi-voice-search">
+</a>
 
-## Install
-
-Install with [npm](https://www.npmjs.com/):
-
-```sh
+## Installation
+``` bash
 $ npm install punjabi-voice-search
+or
+$ yarn add punjabi-voice-search
 ```
 
 ## Usage
+> With required parametres
+```js
+import PunjabiVoiceSearch from "punjabi-voice-search";
+import {useState} from "react";
+
+export default function(){
+  const[anyState,setanyState]=useState();
+  return(
+    <>
+    <PunjabiVoiceSearch 
+    initials={false}
+    setState={setanyState}/>
+    </>
+  )
+}
+
+```
+
+> With all required and optional parameters
 
 ```js
-import React, { useState } from 'react';
-import PunjabiVoiceSearch from 'punjabi-voice-search'; // Import from your package
+import PunjabiVoiceSearch from "punjabi-voice-search";
+import {useState} from "react";
+import { IoIosMic } from "react-icons/io";
 
-const App: React.FC = () => {
-  const [transcript, setTranscript] = useState<string>(''); // For managing transcript state
-
-  return (
-    <div>
-      <h1>Punjabi Voice Search Example</h1>
-
-      {/* Using PunjabiVoiceSearch with initials as false */}
-      <h2>Transcript Mode</h2>
-      <PunjabiVoiceSearch
-        initials={false} // Transcript mode
-        micSize={40}
-        state={transcript} // Pass transcript state
-        setState={setTranscript} // Set transcript state
-      />
-
-      {/* Using PunjabiVoiceSearch with initials as true */}
-      <h2>Gurbani Mode</h2>
-      <PunjabiVoiceSearch
-        initials={true} // Gurbani search mode
-        micSize={40}
-        state={transcript} // Pass transcript state
-        setState={setTranscript} // Set transcript state
-      />
-
-      {/* Displaying the transcript */}
-      {transcript && (
-        <div>
-          <h3>Transcript Output:</h3>
-          <p>{transcript}</p>
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default App;
-
-```
-
-## Customization Of Component
-
-```ts
-interface Props {
-    Mic?: React.ElementType;
-    activeMicColor?: string;
-    micDefaultColor?: string;
-    micDefaultBGColor?: string;
-    micActiveBGColor?: string;
-    micSize?: number;
-    borderRadius?: string;
-    initials: boolean;
+export default function(){
+  const[anyState,setanyState]=useState();
+  return(
+    <>
+    <PunjabiVoiceSearch 
+    initials={false}
+    setState={setanyState}
+    Mic={IoIosMic}
+    micSize={50}
+    activeMicColor="#000"
+    micActiveBGColor="black"
+    borderRadius="50"
+    micDefaultBGColor="blue"
+    micDefaultColor="white"
+    />
+    </>
+  )
 }
+
 ```
+## Props
 
-## Input Parameters
+| Parameters Name   | Required / Optional |
+| ----------------- | ------------------- |
+| initials          | Required            |
+| setState          | Required            |
+| Mic               | Optional            |
+| micSize           | Optional            |
+| activeMicColor    | Optional            |
+| micActiveBGColor  | Optional            |
+| borderRadius      | Optional            |
+| micDefaultBGColor | Optional            |
+| micDefaultColor   | Optional            |
 
-| Variable Name | Value                                 |
-| ------------- | ------------------------------------- |
-| audioData     | `string:` Audio Data in base64 format |
-| initials      | `boolean:` true or false              |
 
-## Return Value Based On "initials"
+## Props Description
+| Parameter Name    | Description                                                                                                                                                                                                            |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| intitals          | This is the boolean value which is used for to get only initals character of the word or to get full transcript. True means to get initals only and false means to get full transcript                                 |
+| setState          | This is the useState variable in which the data will be stored after you get the result                                                                                                                                |
+| Mic               | This is an optional  parameter which is used to change the apperance of mic icon you can import any icon you want to use. And pass the whole component in that prop (e.g.- IoIosMic).                                  |
+| micSize           | This is an  optional paramenter which used to adjust the size of the mic icon. I accepts only the number value                                                                                                         |
+| activeMicColor    | This is an another optional parameter which is used to change the color of the mic icon when it active i.e. when the mic is listening. It accepts the string value it can be in rgb mode, hexadecimal mode, hsl mode . |
+| micActiveBGColor  | This is another optional parameter for changing the background color of mic when mic is ON/active.It accepts the string value it can be in rgb mode, hexadecimal mode, hsl mode .                                      |
+| borderRadius      | This is an optional parameter which accepts an number value and it will add border radius to the background on the mic.                                                                                                |
+| micDefaultBGColor | This is an optional parameter which is accepts string value which is used to change the background color of mic when mic is in OFF/inactivce state. It accepts colors in rgb mode, hsl, mode and hexadecimal mode.     |
+| micDefaultColor   | This is an optional parameter which accepts string value which is used to change the color of mic icon when mic is in OFF/Inactive state. It accepts colors in rgb mode. hexadecimal mode and hsl mode.                |
 
-| initials | Return Value                                                                     |
-| -------- | -------------------------------------------------------------------------------- |
-| true     | `transcript(string)` First letter of each word in a variable called "transcript" |
-| false    | `transcript(string)` Proper transcript in a variable called "transcript"         |
+
 
 ### Authors
 
-***Dilraj Singh , Simarjot Singh***
+***Dilraj Singh , Simarjot Singh*** 
